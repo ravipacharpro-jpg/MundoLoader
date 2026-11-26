@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.rdx.mundoloader'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.rdx.mundoloader"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../keystore/release.keystore')
+            storePassword 'featurestic2026'
+            keyAlias 'featurestic'
+            keyPassword 'featurestic2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+            pickFirsts += ['**/*.so']
+        }
+    }
+}
+
+dependencies {
+    implementation files('libs/FeaturesticMundo-release.aar')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+}
