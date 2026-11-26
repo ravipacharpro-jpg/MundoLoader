@@ -51,13 +51,13 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk dist/MundoLoader-release.apk
           ls -lh dist/MundoLoader-release.apk
 
-      - name: Publish Release v1.0.0
+      - name: Publish Release v1.0.1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release view v1.0.0 >/dev/null 2>&1 && gh release delete v1.0.0 --yes --cleanup-tag || true
-          git push origin --delete v1.0.0 >/dev/null 2>&1 || true
-          gh release create v1.0.0 dist/MundoLoader-release.apk#MundoLoader-release.apk \
-            --title "MundoLoader v1.0.0" \
-            --notes "MundoLoader test APK powered by FeaturesticMundoSDK v1.1.0." \
+          gh release view v1.0.1 >/dev/null 2>&1 && gh release delete v1.0.1 --yes --cleanup-tag || true
+          git push origin --delete v1.0.1 >/dev/null 2>&1 || true
+          gh release create v1.0.1 dist/MundoLoader-release.apk#MundoLoader-release.apk \
+            --title "MundoLoader v1.0.1" \
+            --notes "MundoLoader test APK powered by FeaturesticMundoSDK v1.1.1." \
             --target "$GITHUB_SHA"
