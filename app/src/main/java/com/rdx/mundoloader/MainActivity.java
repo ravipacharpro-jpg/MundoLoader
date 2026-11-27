@@ -29,6 +29,7 @@ import net_62v.external.MetaPackageManager;
 public class MainActivity extends AppCompatActivity {
     private static final String[] GAME_LABELS = {
             "BGMI (India)",
+            "BGMI Air (com.krafton.bgmilite)",
             "PUBG Mobile (Global)",
             "PUBG Mobile (KR)",
             "PUBG Mobile (TW)",
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private static final String[] GAME_PKGS = {
             "com.pubg.imobile",
+            "com.krafton.bgmilite",
             "com.tencent.ig",
             "com.pubg.krmobile",
             "com.rekoo.pubgm",
