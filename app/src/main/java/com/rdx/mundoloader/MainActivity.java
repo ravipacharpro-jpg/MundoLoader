@@ -8,7 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +27,24 @@ import net_62v.external.MetaApplicationInstaller;
 import net_62v.external.MetaPackageManager;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TARGET_PKG = "com.pubg.imobile";
+    private static final String[] GAME_LABELS = {
+            "BGMI (India)",
+            "PUBG Mobile (Global)",
+            "PUBG Mobile (KR)",
+            "PUBG Mobile (TW)",
+            "PUBG Mobile (VN)"
+    };
+    private static final String[] GAME_PKGS = {
+            "com.pubg.imobile",
+            "com.tencent.ig",
+            "com.pubg.krmobile",
+            "com.rekoo.pubgm",
+            "com.vng.pubgmobile"
+    };
 
+    private String selectedPkg = GAME_PKGS[0];
     private TextView tvHeader, tvExpiry, tvEngineStatus, tvGameState;
+    private Spinner spGameVersion;
     private Switch switchHideEsp;
 
     @Override
@@ -38,7 +56,33 @@ public class MainActivity extends AppCompatActivity {
         tvExpiry = findViewById(R.id.tvExpiryValue);
         tvEngineStatus = findViewById(R.id.tvEngineStatus);
         tvGameState = findViewById(R.id.tvGameState);
+        spGameVersion = findViewById(R.id.spGameVersion);
         switchHideEsp = findViewById(R.id.switchHideEsp);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, GAME_LABELS);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGameVersion.setAdapter(adapter);
+
+        int defaultIdx = 0;
+        for (int i = 0; i < GAME_PKGS.length; i++) {
+            if (MetaPackageManager.isInnerAppInstalled(GAME_PKGS[i])) {
+                defaultIdx = i;
+                break;
+            }
+        }
+        selectedPkg = GAME_PKGS[defaultIdx];
+        spGameVersion.setSelection(defaultIdx);
+        spGameVersion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, android.view.View view, int pos, long id) {
+                selectedPkg = GAME_PKGS[pos];
+                refreshStatus();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         String modname = getIntent().getStringExtra("modname");
         String expiry = getIntent().getStringExtra("expiry");
@@ -56,30 +100,30 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnClone = findViewById(R.id.btnCloneGame);
         btnClone.setOnClickListener(v -> {
-            int res = MetaApplicationInstaller.cloneApp(TARGET_PKG, "0");
+            int res = MetaApplicationInstaller.cloneApp(selectedPkg, "0");
             Toast.makeText(this,
-                    res == 0 ? "Linked com.pubg.imobile (Zero-Copy)" : "Install BGMI (com.pubg.imobile) on phone first",
+                    res == 0 ? "Linked " + selectedPkg + " (Zero-Copy)" : "Install " + selectedPkg + " on phone first",
                     Toast.LENGTH_SHORT).show();
             refreshStatus();
-        ensureStoragePermission();
+            ensureStoragePermission();
         });
 
         Button btnLaunch = findViewById(R.id.btnLaunchGame);
         btnLaunch.setOnClickListener(v -> {
-            if (!MetaPackageManager.isInnerAppInstalled(TARGET_PKG)) {
-                int res = MetaApplicationInstaller.cloneApp(TARGET_PKG, "0");
+            if (!MetaPackageManager.isInnerAppInstalled(selectedPkg)) {
+                int res = MetaApplicationInstaller.cloneApp(selectedPkg, "0");
                 if (res != 0) {
-                    Toast.makeText(this, "com.pubg.imobile not found on device", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, selectedPkg + " not found on device", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
-            MetaActivityManager.launchApp(TARGET_PKG);
+            MetaActivityManager.launchApp(selectedPkg);
         });
 
         Button btnClean = findViewById(R.id.btnCleanData);
         btnClean.setOnClickListener(v -> {
-            MetaPackageManager.cleanPackageDataAsUser(TARGET_PKG, "0");
-            Toast.makeText(this, "Virtual sandbox data cleaned", Toast.LENGTH_SHORT).show();
+            MetaPackageManager.cleanPackageDataAsUser(selectedPkg, "0");
+            Toast.makeText(this, "Virtual sandbox data cleaned for " + selectedPkg, Toast.LENGTH_SHORT).show();
         });
 
         Button btnLogout = findViewById(R.id.btnSignOut);
@@ -94,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
         boolean sdkOk = MetaActivationManager.getActivationStatus();
         tvEngineStatus.setText("Engine: " + ver + " | SDK: " + (sdkOk ? "Active" : MetaActivationManager.getActivationMessage()));
 
-        boolean installed = MetaPackageManager.isInnerAppInstalled(TARGET_PKG);
-        tvGameState.setText("Target: " + TARGET_PKG + " (" + (installed ? "Ready" : "Not Found on Host") + ")");
+        boolean installed = MetaPackageManager.isInnerAppInstalled(selectedPkg);
+        tvGameState.setText("Target: " + selectedPkg + " (" + (installed ? "Ready" : "Not Found on Host") + ")");
     }
 
     private void ensureStoragePermission() {
