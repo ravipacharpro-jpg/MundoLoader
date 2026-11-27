@@ -1,7 +1,13 @@
 package com.rdx.mundoloader;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -40,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (expiry != null && !expiry.isEmpty()) tvExpiry.setText("Expires: " + expiry);
 
         refreshStatus();
+        ensureStoragePermission();
 
         switchHideEsp.setOnCheckedChangeListener((btn, isChecked) -> {
             MundoStreamproofGuard.setEnabled(isChecked, MainActivity.this);
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     res == 0 ? "Linked com.pubg.imobile (Zero-Copy)" : "Install BGMI (com.pubg.imobile) on phone first",
                     Toast.LENGTH_SHORT).show();
             refreshStatus();
+        ensureStoragePermission();
         });
 
         Button btnLaunch = findViewById(R.id.btnLaunchGame);
@@ -88,5 +96,29 @@ public class MainActivity extends AppCompatActivity {
 
         boolean installed = MetaPackageManager.isInnerAppInstalled(TARGET_PKG);
         tvGameState.setText("Target: " + TARGET_PKG + " (" + (installed ? "Ready" : "Not Found on Host") + ")");
+    }
+
+    private void ensureStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Toast.makeText(this, "Grant All Files Access for OBB support", Toast.LENGTH_LONG).show();
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                } catch (Throwable t) {
+                    try {
+                        startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
+                    } catch (Throwable ignored) {}
+                }
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, 1001);
+            }
+        }
     }
 }
