@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private String selectedPkg = GAME_PKGS[0];
-    private TextView tvHeader, tvExpiry, tvEngineStatus, tvGameState;
+    private TextView tvHeader, tvExpiry, tvEngineStatus, tvGameState, tvSdkPill, tvAnnouncement;
+    private android.view.View layoutAnnouncement;
     private Spinner spGameVersion;
     private Switch switchHideEsp;
 
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         tvExpiry = findViewById(R.id.tvExpiryValue);
         tvEngineStatus = findViewById(R.id.tvEngineStatus);
         tvGameState = findViewById(R.id.tvGameState);
+        tvSdkPill = findViewById(R.id.tvSdkPill);
+        tvAnnouncement = findViewById(R.id.tvAnnouncement);
+        layoutAnnouncement = findViewById(R.id.layoutAnnouncement);
         spGameVersion = findViewById(R.id.spGameVersion);
         switchHideEsp = findViewById(R.id.switchHideEsp);
 
@@ -88,8 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
         String modname = getIntent().getStringExtra("modname");
         String expiry = getIntent().getStringExtra("expiry");
+        String announcement = getIntent().getStringExtra("announcement");
         if (modname != null && !modname.isEmpty()) tvHeader.setText(modname);
         if (expiry != null && !expiry.isEmpty()) tvExpiry.setText("Expires: " + expiry);
+        if (announcement != null && !announcement.trim().isEmpty()) {
+            tvAnnouncement.setText(announcement.trim());
+            layoutAnnouncement.setVisibility(android.view.View.VISIBLE);
+        }
 
         refreshStatus();
         ensureStoragePermission();
@@ -139,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         String ver = MundoNative.isLoaded() ? MundoNative.nativeGetEngineVersion() : "Java-Fallback";
         boolean sdkOk = MetaActivationManager.getActivationStatus();
         tvEngineStatus.setText("Engine: " + ver + " | SDK: " + (sdkOk ? "Active" : MetaActivationManager.getActivationMessage()));
+        if (tvSdkPill != null) {
+            tvSdkPill.setText(sdkOk ? "Active" : "Offline");
+        }
 
         boolean installed = MetaPackageManager.isInnerAppInstalled(selectedPkg);
         tvGameState.setText("Target: " + selectedPkg + " (" + (installed ? "Ready" : "Not Found on Host") + ")");

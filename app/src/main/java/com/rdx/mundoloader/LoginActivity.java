@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String KEY_PANEL_URL = "https://featurestic-key-panel.vercel.app/connect";
-    private static final String LOADER_SLUG = "rdx-loader";
+    private static final String LOADER_SLUG = "mundo-loader";
 
     private EditText etKey;
     private Button btnSignIn;
@@ -58,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         btnSignIn.setEnabled(false);
         progress.setVisibility(View.VISIBLE);
+        tvStatus.setVisibility(View.VISIBLE);
+        tvStatus.setTextColor(0xFF636366);
         tvStatus.setText("Authenticating...");
 
         new Thread(() -> {
@@ -99,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         btnSignIn.setEnabled(true);
                         progress.setVisibility(View.GONE);
+                        tvStatus.setVisibility(View.VISIBLE);
+                        tvStatus.setTextColor(0xFFFF3B30);
                         tvStatus.setText(reason);
                         Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_LONG).show();
                     });
@@ -108,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject data = json.optJSONObject("data");
                 String exp = data != null ? data.optString("EXP", "-") : "-";
                 String modname = data != null ? data.optString("modname", "Mundo Loader") : "Mundo Loader";
+                String announcement = data != null ? data.optString("announcement", "") : "";
 
                 getSharedPreferences("mundo_loader_prefs", MODE_PRIVATE)
                         .edit().putString("saved_key", key).apply();
@@ -117,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                     i.putExtra("license_key", key);
                     i.putExtra("expiry", exp);
                     i.putExtra("modname", modname);
+                    i.putExtra("announcement", announcement);
                     startActivity(i);
                     finish();
                 });
@@ -124,6 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     btnSignIn.setEnabled(true);
                     progress.setVisibility(View.GONE);
+                    tvStatus.setVisibility(View.VISIBLE);
+                    tvStatus.setTextColor(0xFFFF3B30);
                     tvStatus.setText(t.getMessage() != null ? t.getMessage() : "Network error");
                 });
             } finally {

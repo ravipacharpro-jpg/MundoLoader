@@ -2,131 +2,278 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F4F0">
+    android:background="#F2F2F7"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="28dp">
 
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_apple_monogram"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="M"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvBrandHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="-0.02"
+                    android:text="Mundo Loader"
+                    android:textColor="#1C1C1E"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/tvExpiryValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Expires: -"
+                    android:textColor="#636366"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSdkPill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_apple_pill_green"
+                android:fontFamily="sans-serif-medium"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:text="Active"
+                android:textColor="#1D8348"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Announcement Banner -->
+        <LinearLayout
+            android:id="@+id/layoutAnnouncement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_apple_btn_tinted"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.06"
+                android:text="NOTICE"
+                android:textColor="#007AFF"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAnnouncement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text=""
+                android:textColor="#1C1C1E"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Target Environment Card -->
         <TextView
-            android:id="@+id/tvBrandHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MUNDO LOADER"
-            android:textColor="#111111"
-            android:textSize="22sp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="8dp"
+            android:letterSpacing="0.08"
+            android:text="TARGET ENVIRONMENT"
+            android:textColor="#8E8E93"
+            android:textSize="11sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvExpiryValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Expires: -"
-            android:textColor="#858585"
-            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
-            android:elevation="2dp"
+            android:background="@drawable/bg_apple_card"
+            android:elevation="1dp"
             android:orientation="vertical"
             android:padding="18dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PUBG / BGMI Version"
-                android:textColor="#111111"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:text="Game Version"
+                android:textColor="#1C1C1E"
+                android:textSize="15sp" />
 
             <Spinner
                 android:id="@+id/spGameVersion"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="8dp" />
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_apple_input"
+                android:paddingHorizontal="12dp" />
 
             <TextView
                 android:id="@+id/tvGameState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:text="Target: com.pubg.imobile"
-                android:textColor="#858585"
+                android:textColor="#636366"
                 android:textSize="13sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="14dp"
+                android:background="#E5E5EA" />
 
             <TextView
                 android:id="@+id/tvEngineStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
                 android:text="Engine: Initializing..."
-                android:textColor="#E53935"
-                android:textSize="12sp" />
+                android:textColor="#1C1C1E"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Privacy & Protection Card -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:letterSpacing="0.08"
+            android:text="PRIVACY &amp; PROTECTION"
+            android:textColor="#8E8E93"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_apple_card"
+            android:elevation="1dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="18dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Hide ESP (Streamproof)"
-                    android:textColor="#111111"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/switchHideEsp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Streamproof Mode"
+                    android:textColor="#1C1C1E"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Hide ESP overlay from screen capture"
+                    android:textColor="#636366"
+                    android:textSize="12sp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnLaunchGame"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="18dp"
-                android:backgroundTint="#E53935"
-                android:text="START GAME"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnCloneGame"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#111111"
-                android:text="LINK / CLONE GAME"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnCleanData"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#E8E5DD"
-                android:text="CLEAN SANDBOX DATA"
-                android:textColor="#111111" />
-
-            <Button
-                android:id="@+id/btnSignOut"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#FFFFFF"
-                android:text="SIGN OUT"
-                android:textColor="#E53935" />
+            <Switch
+                android:id="@+id/switchHideEsp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <!-- Primary Action -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLaunchGame"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/bg_apple_btn_primary"
+            android:fontFamily="sans-serif-medium"
+            android:stateListAnimator="@null"
+            android:text="Launch Game"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <!-- Secondary Actions Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCloneGame"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_apple_btn_tinted"
+                android:fontFamily="sans-serif-medium"
+                android:stateListAnimator="@null"
+                android:text="Link Game"
+                android:textAllCaps="false"
+                android:textColor="#007AFF"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCleanData"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_apple_btn_neutral"
+                android:fontFamily="sans-serif-medium"
+                android:stateListAnimator="@null"
+                android:text="Reset Sandbox"
+                android:textAllCaps="false"
+                android:textColor="#1C1C1E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Sign Out -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_apple_btn_destructive"
+            android:fontFamily="sans-serif-medium"
+            android:stateListAnimator="@null"
+            android:text="Sign Out"
+            android:textAllCaps="false"
+            android:textColor="#FF3B30"
+            android:textSize="14sp" />
     </LinearLayout>
 </ScrollView>
