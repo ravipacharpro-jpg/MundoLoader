@@ -8,10 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,27 +24,11 @@ import net_62v.external.MetaApplicationInstaller;
 import net_62v.external.MetaPackageManager;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String[] GAME_LABELS = {
-            "BGMI (India)",
-            "BGMI Air (com.krafton.bgmilite)",
-            "PUBG Mobile (Global)",
-            "PUBG Mobile (KR)",
-            "PUBG Mobile (TW)",
-            "PUBG Mobile (VN)"
-    };
-    private static final String[] GAME_PKGS = {
-            "com.pubg.imobile",
-            "com.krafton.bgmilite",
-            "com.tencent.ig",
-            "com.pubg.krmobile",
-            "com.rekoo.pubgm",
-            "com.vng.pubgmobile"
-    };
+    private static final String TARGET_PKG = "com.pubg.imobile";
 
-    private String selectedPkg = GAME_PKGS[0];
+    private String selectedPkg = TARGET_PKG;
     private TextView tvHeader, tvExpiry, tvEngineStatus, tvGameState, tvSdkPill, tvAnnouncement;
     private android.view.View layoutAnnouncement;
-    private Spinner spGameVersion;
     private Switch switchHideEsp;
 
     @Override
@@ -62,33 +43,9 @@ public class MainActivity extends AppCompatActivity {
         tvSdkPill = findViewById(R.id.tvSdkPill);
         tvAnnouncement = findViewById(R.id.tvAnnouncement);
         layoutAnnouncement = findViewById(R.id.layoutAnnouncement);
-        spGameVersion = findViewById(R.id.spGameVersion);
         switchHideEsp = findViewById(R.id.switchHideEsp);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, GAME_LABELS);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spGameVersion.setAdapter(adapter);
-
-        int defaultIdx = 0;
-        for (int i = 0; i < GAME_PKGS.length; i++) {
-            if (MetaPackageManager.isInnerAppInstalled(GAME_PKGS[i])) {
-                defaultIdx = i;
-                break;
-            }
-        }
-        selectedPkg = GAME_PKGS[defaultIdx];
-        spGameVersion.setSelection(defaultIdx);
-        spGameVersion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, android.view.View view, int pos, long id) {
-                selectedPkg = GAME_PKGS[pos];
-                refreshStatus();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        selectedPkg = TARGET_PKG;
 
         String modname = getIntent().getStringExtra("modname");
         String expiry = getIntent().getStringExtra("expiry");

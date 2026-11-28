@@ -125,23 +125,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Game Version"
+                android:text="BGMI (India)"
                 android:textColor="#1C1C1E"
-                android:textSize="15sp" />
-
-            <Spinner
-                android:id="@+id/spGameVersion"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_apple_input"
-                android:paddingHorizontal="12dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvGameState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:text="Target: com.pubg.imobile"
                 android:textColor="#636366"
                 android:textSize="13sp" />
